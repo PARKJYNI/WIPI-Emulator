@@ -1,0 +1,14 @@
+[package]
+name = "wipi_ios"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[lib]
+crate-type = ["staticlib", "lib"]
+
+[dependencies]
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+wipi_core = { path = "../wipi_core" }

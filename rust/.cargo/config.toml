@@ -1,0 +1,17 @@
+# Android NDK 크로스 컴파일 설정 (NDK 27.1, minSdk 24, android26-clang — AAudio 때문에 26 필수)
+# macOS 기준. Windows에서 빌드할 땐 맨 아래 주석의 경로로 교체.
+
+[target.aarch64-linux-android]
+linker = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android26-clang"
+
+[target.x86_64-linux-android]
+linker = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/x86_64-linux-android26-clang"
+
+[env]
+CC_aarch64_linux_android = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android26-clang"
+AR_aarch64_linux_android = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+CC_x86_64_linux_android = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/x86_64-linux-android26-clang"
+AR_x86_64_linux_android = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+
+# Windows (이전 설정): prebuilt/windows-x86_64/bin/aarch64-linux-android26-clang.cmd 등
+# C:\Users\parkj\AppData\Local\Android\Sdk\ndk\27.1.12297006\toolchains\llvm\prebuilt\windows-x86_64\bin\

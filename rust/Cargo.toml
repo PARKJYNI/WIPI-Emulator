@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = ["wipi_android", "wipi_core", "wipi_ios"]
+
+[workspace.dependencies]
+# wie 코어는 본인 포크(ParkJeongseop/wie) + rev 고정으로 소비 — 미머지 개선을 앱에 먼저 적용하기 위함.
+# 원칙: 포크의 main은 upstream(dlunch/wie) 추적, 기능은 브랜치로 작업해 upstream PR + 앱용 rev 갱신.
+# upstream 머지 후엔 해당 rev로 복귀. 코어 디버깅 시엔 임시로 path = "../../wie/..." 전환.
+wie_backend = { git = "https://github.com/ParkJeongseop/wie.git", rev = "74fe9a54" }
+wie_ktf = { git = "https://github.com/ParkJeongseop/wie.git", rev = "74fe9a54" }
+wie_lgt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "74fe9a54" }
+wie_skt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "74fe9a54" }
+wie_j2me = { git = "https://github.com/ParkJeongseop/wie.git", rev = "74fe9a54" }
+wie_util = { git = "https://github.com/ParkJeongseop/wie.git", rev = "74fe9a54" }
+
+[profile.release]
+lto = true
+opt-level = 3
+
+# Xcode ld는 rustc 자체 LLVM(fat LTO 산출물)과 버전이 어긋날 수 있어 iOS staticlib은 LTO 없이 빌드
+[profile.release-ios]
+inherits = "release"
+lto = "off"

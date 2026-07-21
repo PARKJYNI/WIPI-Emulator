@@ -1,0 +1,37 @@
+# Rust
+rust/target/
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+# cargo 빌드 후 복사되는 산출물 (재생성 가능)
+android/app/src/main/jniLibs/
+
+# IDE
+.idea/
+*.iml
+
+# 테스트 산출물
+*.bmp
+frame*.png
+app_screen*.png
+
+# iOS (xcodegen 산출물 + 빌드)
+ios/WipiEmulator.xcodeproj/
+ios/build/
+ios/build-device/
+ios/WipiEmulator/Info.plist
+
+# Android 서명 (절대 커밋 금지 — 앱 신원)
+android/keystore.properties
+android/*.jks
+android/*.keystore
+android/app/*.jks
+
+# 데모 빌드 산출물 (build.sh로 재생성)
+demo/build/
+
+# macOS
+.DS_Store
