@@ -42,3 +42,8 @@ ios/             # SwiftUI 앱 (xcodegen)
 
 이 저장소의 코드는 MIT 라이선스입니다. 포함된 오픈소스 컴포넌트(wie, RustJava, smaf — Copyright 2020 Inseok Lee,
 MIT / rodio, rustysynth, cpal / GeneralUser GS 사운드폰트)의 고지는 앱 내 설정 → 오픈소스 라이선스에서 확인할 수 있습니다.
+
+## 개인정보 처리방침
+
+본 앱은 어떤 개인정보도 수집·전송하지 않으며, 게임 파일은 기기 로컬에만 저장됩니다.
+전문은 [개인정보 처리방침 / Privacy Policy](docs/PRIVACY.md)를 참고하세요.
