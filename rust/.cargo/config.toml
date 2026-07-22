@@ -1,11 +1,15 @@
 # Android NDK 크로스 컴파일 설정 (NDK 27.1, minSdk 24, android26-clang — AAudio 때문에 26 필수)
 # macOS 기준. Windows에서 빌드할 땐 맨 아래 주석의 경로로 교체.
 
+# 16KB 페이지 정렬(-z max-page-size=16384): Android 15+ 필수. cargo 빌드는 AGP/NDK 자동정렬을 안 타므로 명시.
+# 이 .so 하나가 4KB·16KB 페이지 기기 모두에서 동작(하위 호환).
 [target.aarch64-linux-android]
 linker = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android26-clang"
+rustflags = ["-C", "link-arg=-Wl,-z,max-page-size=16384"]
 
 [target.x86_64-linux-android]
 linker = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/x86_64-linux-android26-clang"
+rustflags = ["-C", "link-arg=-Wl,-z,max-page-size=16384"]
 
 [env]
 CC_aarch64_linux_android = "/Users/parkjeongseop/Library/Android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android26-clang"
