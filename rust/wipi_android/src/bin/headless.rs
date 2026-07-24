@@ -5,9 +5,24 @@
 
 use std::{fs, io::Write, path::PathBuf, sync::Arc};
 
-use wie_backend::Event;
+use wie_backend::{Event, KeyCode};
 
 use wipi_android::platform::{CapturedFrame, MobilePlatform, SharedPlatform};
+
+/// 진행성(T2/T3) 검증용 키 시나리오: (시각 ms, 키, down 여부)
+/// 타이틀 통과(OK×2) → 메뉴 이동(DOWN) → 선택(OK) → 게임 내 입력(5)
+const KEY_SCRIPT: &[(u64, KeyCode, bool)] = &[
+    (4000, KeyCode::OK, true),
+    (4300, KeyCode::OK, false),
+    (6000, KeyCode::OK, true),
+    (6300, KeyCode::OK, false),
+    (8000, KeyCode::DOWN, true),
+    (8300, KeyCode::DOWN, false),
+    (10000, KeyCode::OK, true),
+    (10300, KeyCode::OK, false),
+    (12000, KeyCode::NUM5, true),
+    (12300, KeyCode::NUM5, false),
+];
 
 fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
@@ -32,9 +47,18 @@ fn main() -> anyhow::Result<()> {
     let mut last_frame: Option<CapturedFrame> = None;
     let mut saved_seconds = 0u64;
     let mut ticks = 0u64;
+    let mut next_key = 0usize; // KEY_SCRIPT 진행 인덱스
     while start.elapsed().as_secs() < max_seconds {
         if platform.screen_capture().take_redraw_request() {
             emulator.handle_event(Event::Redraw);
+        }
+
+        // 스크립트된 키 입력 주입 (진행성 검증)
+        while next_key < KEY_SCRIPT.len() && start.elapsed().as_millis() as u64 >= KEY_SCRIPT[next_key].0 {
+            let (at, key, down) = KEY_SCRIPT[next_key];
+            eprintln!("INPUT t={}ms {:?} {}", at, key, if down { "down" } else { "up" });
+            emulator.handle_event(if down { Event::Keydown(key) } else { Event::Keyup(key) });
+            next_key += 1;
         }
 
         emulator.tick()?;
