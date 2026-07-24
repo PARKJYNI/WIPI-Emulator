@@ -9,20 +9,48 @@ use wie_backend::{Event, KeyCode};
 
 use wipi_android::platform::{CapturedFrame, MobilePlatform, SharedPlatform};
 
-/// 진행성(T2/T3) 검증용 키 시나리오: (시각 ms, 키, down 여부)
+/// 진행성(T2/T3) 검증용 기본 키 시나리오 ("초:키" 목록, 키는 300ms 후 up)
 /// 타이틀 통과(OK×2) → 메뉴 이동(DOWN) → 선택(OK) → 게임 내 입력(5)
-const KEY_SCRIPT: &[(u64, KeyCode, bool)] = &[
-    (4000, KeyCode::OK, true),
-    (4300, KeyCode::OK, false),
-    (6000, KeyCode::OK, true),
-    (6300, KeyCode::OK, false),
-    (8000, KeyCode::DOWN, true),
-    (8300, KeyCode::DOWN, false),
-    (10000, KeyCode::OK, true),
-    (10300, KeyCode::OK, false),
-    (12000, KeyCode::NUM5, true),
-    (12300, KeyCode::NUM5, false),
-];
+const DEFAULT_KEYS: &str = "4:OK,6:OK,8:DOWN,10:OK,12:5";
+
+fn parse_key(name: &str) -> Option<KeyCode> {
+    Some(match name {
+        "UP" => KeyCode::UP,
+        "DOWN" => KeyCode::DOWN,
+        "LEFT" => KeyCode::LEFT,
+        "RIGHT" => KeyCode::RIGHT,
+        "OK" => KeyCode::OK,
+        "CLR" => KeyCode::CLEAR,
+        "0" => KeyCode::NUM0,
+        "1" => KeyCode::NUM1,
+        "2" => KeyCode::NUM2,
+        "3" => KeyCode::NUM3,
+        "4" => KeyCode::NUM4,
+        "5" => KeyCode::NUM5,
+        "6" => KeyCode::NUM6,
+        "7" => KeyCode::NUM7,
+        "8" => KeyCode::NUM8,
+        "9" => KeyCode::NUM9,
+        _ => return None,
+    })
+}
+
+/// "4:OK,6:2" 형식 → (ms, key, down) 이벤트 목록 (down 후 300ms 뒤 up)
+fn parse_key_script(spec: &str) -> Vec<(u64, KeyCode, bool)> {
+    let mut script = Vec::new();
+    for entry in spec.split(',').filter(|x| !x.is_empty()) {
+        let Some((at, key_name)) = entry.split_once(':') else { continue };
+        let (Ok(at_s), Some(key)) = (at.trim().parse::<f64>(), parse_key(key_name.trim())) else {
+            eprintln!("ignoring invalid key entry: {entry}");
+            continue;
+        };
+        let at_ms = (at_s * 1000.0) as u64;
+        script.push((at_ms, key, true));
+        script.push((at_ms + 300, key, false));
+    }
+    script.sort_by_key(|x| x.0);
+    script
+}
 
 fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
@@ -32,9 +60,11 @@ fn main() -> anyhow::Result<()> {
 
     let args: Vec<String> = std::env::args().collect();
     let [_, game_path, out_path, rest @ ..] = args.as_slice() else {
-        anyhow::bail!("usage: headless <game file> <output bmp prefix> [seconds]");
+        anyhow::bail!("usage: headless <game file> <output bmp prefix> [seconds] [keys: \"4:OK,6:2\" | \"none\"]");
     };
     let max_seconds: u64 = rest.first().map(|x| x.parse()).transpose()?.unwrap_or(10);
+    let key_spec = rest.get(1).map(String::as_str).unwrap_or(DEFAULT_KEYS);
+    let key_script = if key_spec == "none" { Vec::new() } else { parse_key_script(key_spec) };
 
     let out_path_buf = PathBuf::from(out_path);
     let data_dir = out_path_buf.parent().unwrap_or(std::path::Path::new(".")).join("wie_data");
@@ -54,8 +84,8 @@ fn main() -> anyhow::Result<()> {
         }
 
         // 스크립트된 키 입력 주입 (진행성 검증)
-        while next_key < KEY_SCRIPT.len() && start.elapsed().as_millis() as u64 >= KEY_SCRIPT[next_key].0 {
-            let (at, key, down) = KEY_SCRIPT[next_key];
+        while next_key < key_script.len() && start.elapsed().as_millis() as u64 >= key_script[next_key].0 {
+            let (at, key, down) = key_script[next_key];
             eprintln!("INPUT t={}ms {:?} {}", at, key, if down { "down" } else { "up" });
             emulator.handle_event(if down { Event::Keydown(key) } else { Event::Keyup(key) });
             next_key += 1;
