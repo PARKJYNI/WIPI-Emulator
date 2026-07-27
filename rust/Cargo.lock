@@ -178,7 +178,7 @@ dependencies = [
 [[package]]
 name = "classfile"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=720335a7#720335a710739e34143559bcb4dadfd603e7b4b8"
+source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=aeeba494#aeeba494f57b1f2fa3e82319d07dbfed17288282"
 dependencies = [
  "java_constants",
  "nom 8.0.0",
@@ -669,7 +669,7 @@ dependencies = [
 [[package]]
 name = "java_class_proto"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=720335a7#720335a710739e34143559bcb4dadfd603e7b4b8"
+source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=aeeba494#aeeba494f57b1f2fa3e82319d07dbfed17288282"
 dependencies = [
  "async-trait",
  "dyn-clone",
@@ -680,7 +680,7 @@ dependencies = [
 [[package]]
 name = "java_constants"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=720335a7#720335a710739e34143559bcb4dadfd603e7b4b8"
+source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=aeeba494#aeeba494f57b1f2fa3e82319d07dbfed17288282"
 dependencies = [
  "bitflags",
 ]
@@ -688,7 +688,7 @@ dependencies = [
 [[package]]
 name = "java_runtime"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=720335a7#720335a710739e34143559bcb4dadfd603e7b4b8"
+source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=aeeba494#aeeba494f57b1f2fa3e82319d07dbfed17288282"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -764,7 +764,7 @@ dependencies = [
 [[package]]
 name = "jvm"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=720335a7#720335a710739e34143559bcb4dadfd603e7b4b8"
+source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=aeeba494#aeeba494f57b1f2fa3e82319d07dbfed17288282"
 dependencies = [
  "anyhow",
  "async-recursion",
@@ -783,7 +783,7 @@ dependencies = [
 [[package]]
 name = "jvm_rust"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=720335a7#720335a710739e34143559bcb4dadfd603e7b4b8"
+source = "git+https://github.com/ParkJeongseop/RustJava.git?rev=aeeba494#aeeba494f57b1f2fa3e82319d07dbfed17288282"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -1763,7 +1763,7 @@ checksum = "a28ac98ddc8b9274cb41bb4d9d4d5c425b6020c50c46f25559911905610b4a88"
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -1783,7 +1783,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -1803,7 +1803,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1818,7 +1818,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1835,7 +1835,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -1862,7 +1862,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1890,7 +1890,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bitflags",
@@ -1910,7 +1910,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1927,7 +1927,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bitflags",
@@ -1947,7 +1947,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "bytemuck",
  "tracing",
@@ -1957,7 +1957,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1971,7 +1971,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/ParkJeongseop/wie.git?rev=ef04a5f7#ef04a5f7eee40f7b798e2c08316be46e65c7ff99"
+source = "git+https://github.com/ParkJeongseop/wie.git?rev=aa717a4c#aa717a4c2e1c8e5b319bd5987cb14208eed6787e"
 dependencies = [
  "async-trait",
  "bitflags",
