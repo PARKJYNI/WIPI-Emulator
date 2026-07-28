@@ -109,40 +109,63 @@ fn emulator_thread(
             continue;
         }
 
-        while let Ok(event) = key_rx.try_recv() {
-            match event {
-                KeyEvent::Down(key) => {
-                    if let std::collections::hash_map::Entry::Vacant(e) = pressed.entry(key) {
-                        emulator.handle_event(Event::Keydown(key));
-                        e.insert(Instant::now());
+        // 코어의 panic(에뮬레이션 버그)이 스레드를 조용히 죽이면 앱은 "프리즈"로만
+        // 보인다 — catch_unwind로 Runtime 에러로 승격해 호스트가 표시하게 한다.
+        // panic 후엔 emulator를 다시 만지지 않고 곧장 break하므로 AssertUnwindSafe가 안전하다.
+        let step = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            while let Ok(event) = key_rx.try_recv() {
+                match event {
+                    KeyEvent::Down(key) => {
+                        if let std::collections::hash_map::Entry::Vacant(e) = pressed.entry(key) {
+                            emulator.handle_event(Event::Keydown(key));
+                            e.insert(Instant::now());
+                        }
                     }
-                }
-                KeyEvent::Up(key) => {
-                    if pressed.remove(&key).is_some() {
-                        emulator.handle_event(Event::Keyup(key));
+                    KeyEvent::Up(key) => {
+                        if pressed.remove(&key).is_some() {
+                            emulator.handle_event(Event::Keyup(key));
+                        }
                     }
                 }
             }
-        }
 
-        let now = Instant::now();
-        for (key, time) in pressed.iter_mut() {
-            if now.duration_since(*time).as_millis() > 100 {
-                emulator.handle_event(Event::Keyrepeat(*key));
-                *time = now;
+            let now = Instant::now();
+            for (key, time) in pressed.iter_mut() {
+                if now.duration_since(*time).as_millis() > 100 {
+                    emulator.handle_event(Event::Keyrepeat(*key));
+                    *time = now;
+                }
             }
-        }
 
-        if platform.screen_capture().take_redraw_request() {
-            emulator.handle_event(Event::Redraw);
-        }
+            if platform.screen_capture().take_redraw_request() {
+                emulator.handle_event(Event::Redraw);
+            }
 
-        if let Err(e) = emulator.tick() {
-            *error.lock().unwrap() = Some(SessionError {
-                kind: ErrorKind::Runtime,
-                message: e.to_string(),
-            });
-            break;
+            emulator.tick()
+        }));
+
+        match step {
+            Ok(Ok(())) => {}
+            Ok(Err(e)) => {
+                *error.lock().unwrap() = Some(SessionError {
+                    kind: ErrorKind::Runtime,
+                    message: e.to_string(),
+                });
+                break;
+            }
+            Err(payload) => {
+                let message = payload
+                    .downcast_ref::<&str>()
+                    .map(|s| (*s).to_string())
+                    .or_else(|| payload.downcast_ref::<String>().cloned())
+                    .unwrap_or_else(|| "panic in emulator core".to_string());
+                tracing::error!("emulator core panicked: {message}");
+                *error.lock().unwrap() = Some(SessionError {
+                    kind: ErrorKind::Runtime,
+                    message: format!("core panic: {message}"),
+                });
+                break;
+            }
         }
     }
 }

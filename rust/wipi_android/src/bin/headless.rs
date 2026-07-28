@@ -70,21 +70,40 @@ fn main() -> anyhow::Result<()> {
     let data_dir = out_path_buf.parent().unwrap_or(std::path::Path::new(".")).join("wie_data");
     let platform = Arc::new(MobilePlatform::new(data_dir, 240, 320, None));
 
+    // WIE_VCLOCK=1: 가상 시계(호출마다 1ms 전진) — 실행 간 결정성 확보 (flaky 조사용).
+    // 루프 종료/키 주입/프레임 저장도 가상 시간 기준으로 동작한다.
+    const VCLOCK_START_EPOCH_MS: u64 = 1_767_225_600_000; // 2026-01-01 UTC
+    let virtual_clock = std::env::var("WIE_VCLOCK").is_ok_and(|v| v != "0" && !v.is_empty());
+    if virtual_clock {
+        platform.enable_virtual_clock(VCLOCK_START_EPOCH_MS);
+        eprintln!("virtual clock enabled (deterministic, 1ms per now() call)");
+    }
+
     let buf = fs::read(game_path)?;
     let mut emulator = wipi_android::create_emulator(Box::new(SharedPlatform(platform.clone())), game_path, &buf)?;
 
     let start = std::time::Instant::now();
+    let elapsed_ms = {
+        let platform = platform.clone();
+        move || -> u64 {
+            if virtual_clock {
+                platform.virtual_now_ms().unwrap() - VCLOCK_START_EPOCH_MS
+            } else {
+                start.elapsed().as_millis() as u64
+            }
+        }
+    };
     let mut last_frame: Option<CapturedFrame> = None;
     let mut saved_seconds = 0u64;
     let mut ticks = 0u64;
     let mut next_key = 0usize; // KEY_SCRIPT 진행 인덱스
-    while start.elapsed().as_secs() < max_seconds {
+    while elapsed_ms() / 1000 < max_seconds {
         if platform.screen_capture().take_redraw_request() {
             emulator.handle_event(Event::Redraw);
         }
 
         // 스크립트된 키 입력 주입 (진행성 검증)
-        while next_key < key_script.len() && start.elapsed().as_millis() as u64 >= key_script[next_key].0 {
+        while next_key < key_script.len() && elapsed_ms() >= key_script[next_key].0 {
             let (at, key, down) = key_script[next_key];
             eprintln!("INPUT t={}ms {:?} {}", at, key, if down { "down" } else { "up" });
             emulator.handle_event(if down { Event::Keydown(key) } else { Event::Keyup(key) });
@@ -99,7 +118,7 @@ fn main() -> anyhow::Result<()> {
         }
 
         // 1초마다 현재 프레임 저장 → 진행 과정 관찰용
-        let elapsed = start.elapsed().as_secs();
+        let elapsed = elapsed_ms() / 1000;
         if elapsed > saved_seconds {
             saved_seconds = elapsed;
             if let Some(frame) = &last_frame {

@@ -7,7 +7,7 @@ use std::{
     path::PathBuf,
     sync::{
         Mutex,
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
     },
 };
 
@@ -34,6 +34,9 @@ pub struct MobilePlatform {
     vibration: Mutex<Option<VibrationRequest>>,
     /// 게임이 종료를 요청했는지. 호스트가 폴링으로 감지해 세션을 정리한다.
     exit_requested: AtomicBool,
+    /// 가상 시계 (epoch ms). 0이면 비활성(실시간). now() 호출마다 1ms 전진하는
+    /// 결정적 시계 — flaky(타이밍 레이스) 재현/차단 실험용 (headless 전용).
+    virtual_clock_ms: AtomicU64,
 }
 
 impl MobilePlatform {
@@ -45,6 +48,21 @@ impl MobilePlatform {
             audio_engine: audio::AudioEngine::new(soundfont_path.as_deref()),
             vibration: Mutex::new(None),
             exit_requested: AtomicBool::new(false),
+            virtual_clock_ms: AtomicU64::new(0),
+        }
+    }
+
+    /// 가상 시계 활성화 — now()가 실시간 대신 호출마다 1ms 전진하는 결정적 시계를
+    /// 반환하게 한다. start_epoch_ms는 게임이 보는 시작 시각 (0 금지 — 비활성 의미).
+    pub fn enable_virtual_clock(&self, start_epoch_ms: u64) {
+        self.virtual_clock_ms.store(start_epoch_ms, Ordering::SeqCst);
+    }
+
+    /// 가상 시계의 현재 값(epoch ms). 시계를 전진시키지 않는다. 비활성이면 None.
+    pub fn virtual_now_ms(&self) -> Option<u64> {
+        match self.virtual_clock_ms.load(Ordering::SeqCst) {
+            0 => None,
+            x => Some(x),
         }
     }
 
@@ -108,6 +126,13 @@ impl Platform for MobilePlatform {
     }
 
     fn now(&self) -> Instant {
+        // 가상 시계 활성 시: 호출마다 1ms 전진 (실행 간 완전 결정적)
+        let virtual_ms = self.virtual_clock_ms.load(Ordering::SeqCst);
+        if virtual_ms != 0 {
+            let t = self.virtual_clock_ms.fetch_add(1, Ordering::SeqCst);
+            return Instant::from_epoch_millis(t);
+        }
+
         let since_the_epoch = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap();
 
         Instant::from_epoch_millis(since_the_epoch.as_millis() as _)
