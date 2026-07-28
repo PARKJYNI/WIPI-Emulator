@@ -6,14 +6,14 @@ members = ["wipi_android", "wipi_core", "wipi_ios"]
 # wie 코어는 본인 포크(ParkJeongseop/wie) + rev 고정으로 소비 — 미머지 개선을 앱에 먼저 적용하기 위함.
 # 원칙: 포크의 main은 upstream(dlunch/wie) 추적, 기능은 브랜치로 작업해 upstream PR + 앱용 rev 갱신.
 # upstream 머지 후엔 해당 rev로 복귀. 코어 디버깅 시엔 임시로 path = "../../wie/..." 전환.
-# 현재 rev: 772fca37 (feature/font-metrics — SKVM WieAudioClip double-close 관용 + flaky/T2T3 docs.
+# 현재 rev: 733735c2 (feature/font-metrics — KTF 소문자 p/ 마운트, name tag 해시, 비배열 배열래핑 중단.
 # RustJava는 wie가 ParkJeongseop/RustJava aeeba494로 소비)
-wie_backend = { git = "https://github.com/ParkJeongseop/wie.git", rev = "772fca37" }
-wie_ktf = { git = "https://github.com/ParkJeongseop/wie.git", rev = "772fca37" }
-wie_lgt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "772fca37" }
-wie_skt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "772fca37" }
-wie_j2me = { git = "https://github.com/ParkJeongseop/wie.git", rev = "772fca37" }
-wie_util = { git = "https://github.com/ParkJeongseop/wie.git", rev = "772fca37" }
+wie_backend = { git = "https://github.com/ParkJeongseop/wie.git", rev = "733735c2" }
+wie_ktf = { git = "https://github.com/ParkJeongseop/wie.git", rev = "733735c2" }
+wie_lgt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "733735c2" }
+wie_skt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "733735c2" }
+wie_j2me = { git = "https://github.com/ParkJeongseop/wie.git", rev = "733735c2" }
+wie_util = { git = "https://github.com/ParkJeongseop/wie.git", rev = "733735c2" }
 
 [profile.release]
 lto = true
