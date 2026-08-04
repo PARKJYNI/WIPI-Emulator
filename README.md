@@ -59,6 +59,15 @@ ios/             # SwiftUI app (xcodegen)
 
 The emulation core is a pure interpreter (wie + RustJava), which also works under iOS's JIT restrictions.
 
+### Support
+
+Questions, bug reports, and feature requests are welcome:
+
+- **Email**: parkjeongseop+wipi@parkjeongseop.com
+- **GitHub Issues**: <https://github.com/ParkJeongseop/WIPI-Emulator/issues>
+
+We usually respond within a few business days.
+
 ### License
 
 The code in this repository is MIT licensed. Notices for bundled open-source components
@@ -116,6 +125,15 @@ ios/             # SwiftUI 앱 (xcodegen)
 ```
 
 에뮬레이션 코어는 iOS의 JIT 금지 환경에서도 동작하는 순수 인터프리터(wie + RustJava)입니다.
+
+### 지원
+
+질문·버그 제보·기능 요청을 환영합니다:
+
+- **이메일**: parkjeongseop+wipi@parkjeongseop.com
+- **GitHub Issues**: <https://github.com/ParkJeongseop/WIPI-Emulator/issues>
+
+보통 며칠 내에 답변드립니다.
 
 ### 라이선스
 
