@@ -6,14 +6,14 @@ members = ["wipi_android", "wipi_core", "wipi_ios"]
 # wie 코어는 본인 포크(ParkJeongseop/wie) + rev 고정으로 소비 — 미머지 개선을 앱에 먼저 적용하기 위함.
 # 원칙: 포크의 main은 upstream(dlunch/wie) 추적, 기능은 브랜치로 작업해 upstream PR + 앱용 rev 갱신.
 # upstream 머지 후엔 해당 rev로 복귀. 코어 디버깅 시엔 임시로 path = "../../wie/..." 전환.
-# 현재 rev: b3baf68a (feature/font-metrics — 손상 내성 heap walk + GetFramebufferBpp 폴백:
+# 현재 rev: a5462a1a (feature/font-metrics — 손상 내성 heap walk + GetFramebufferBpp 폴백:
 # 리듬페스티발 렌더링/오버플로우 수정. RustJava는 wie가 3b3b8945 소비 — Timer/TimerTask.cancel)
-wie_backend = { git = "https://github.com/ParkJeongseop/wie.git", rev = "b3baf68a" }
-wie_ktf = { git = "https://github.com/ParkJeongseop/wie.git", rev = "b3baf68a" }
-wie_lgt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "b3baf68a" }
-wie_skt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "b3baf68a" }
-wie_j2me = { git = "https://github.com/ParkJeongseop/wie.git", rev = "b3baf68a" }
-wie_util = { git = "https://github.com/ParkJeongseop/wie.git", rev = "b3baf68a" }
+wie_backend = { git = "https://github.com/ParkJeongseop/wie.git", rev = "a5462a1a" }
+wie_ktf = { git = "https://github.com/ParkJeongseop/wie.git", rev = "a5462a1a" }
+wie_lgt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "a5462a1a" }
+wie_skt = { git = "https://github.com/ParkJeongseop/wie.git", rev = "a5462a1a" }
+wie_j2me = { git = "https://github.com/ParkJeongseop/wie.git", rev = "a5462a1a" }
+wie_util = { git = "https://github.com/ParkJeongseop/wie.git", rev = "a5462a1a" }
 
 [profile.release]
 lto = true
