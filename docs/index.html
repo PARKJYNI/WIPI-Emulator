@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIPI Emulator — 한국 피처폰 게임 에뮬레이터</title>
+<meta name="description" content="WIPI Emulator (WIPI 에뮬) — 추억의 한국 피처폰 게임(WIPI·SKVM·J2ME)을 iPhone과 Android에서. Korean feature-phone game emulator for iOS and Android.">
+<link rel="icon" type="image/png" href="images/icon.png">
+<link rel="apple-touch-icon" href="images/icon.png">
+<style>
+  :root {
+    color-scheme: light dark;
+    --accent: #e8641e;
+    --accent-soft: #ffe3d1;
+    --bg: #ffffff; --fg: #1c1c1e; --card: #f2f2f7; --muted: #6e6e73;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161618; --fg: #f2f2f7; --card: #26262a; --muted: #98989f; --accent-soft: #4a2c1a; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--fg); background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+    line-height: 1.65;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 880px; margin-inline: auto; padding: 0 1.25rem; }
+
+  /* hero */
+  header { padding: 3.5rem 0 2.5rem; text-align: center; }
+  .app-icon {
+    width: 108px; height: 108px; border-radius: 24px; image-rendering: pixelated;
+    box-shadow: 0 8px 28px #0003;
+  }
+  h1 { font-size: 2rem; margin: 1rem 0 .25rem; letter-spacing: -.02em; }
+  .tagline { font-size: 1.1rem; color: var(--muted); margin: 0 0 .35rem; }
+  .tagline-en { font-size: .95rem; color: var(--muted); margin: 0 0 1.5rem; }
+  .cta-row { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: .7rem 1.4rem; border-radius: 999px;
+    font-weight: 600; text-decoration: none; font-size: .95rem;
+  }
+  .btn-primary { background: var(--accent); color: #fff !important; }
+  .btn-ghost { background: var(--card); color: var(--fg) !important; }
+
+  /* screenshots */
+  .shots {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+    padding: 1rem 0 .5rem;
+  }
+  .shots figure { margin: 0; }
+  .shots img {
+    width: 100%; border-radius: 18px; display: block;
+    border: 1px solid #8883; box-shadow: 0 6px 18px #0002;
+  }
+  .shots figcaption { text-align: center; font-size: .82rem; color: var(--muted); margin-top: .5rem; }
+  @media (max-width: 640px) {
+    .shots { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* sections */
+  section { padding: 2.25rem 0 0; }
+  h2 { font-size: 1.35rem; margin: 0 0 1rem; letter-spacing: -.01em; }
+  h3 { font-size: 1.02rem; margin: 1.3rem 0 .3rem; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .feature {
+    background: var(--card); border-radius: 16px; padding: 1.1rem 1.2rem;
+  }
+  .feature .emoji { font-size: 1.5rem; }
+  .feature b { display: block; margin: .35rem 0 .2rem; }
+  .feature p { margin: 0; font-size: .92rem; color: var(--muted); }
+
+  /* contact card */
+  .contact-card {
+    background: var(--accent-soft); border-radius: 18px; padding: 1.4rem 1.5rem; margin-top: 1rem;
+  }
+  .contact-email { font-size: 1.3rem; font-weight: 700; word-break: break-all; }
+  .contact-card p { margin: .4rem 0; }
+
+  ul { padding-left: 1.2rem; }
+  .faq p, .faq li { color: var(--fg); }
+  .faq .en { color: var(--muted); font-size: .9rem; }
+
+  footer {
+    margin-top: 3.5rem; padding: 2rem 0 3rem; border-top: 1px solid #8883;
+    font-size: .85rem; color: var(--muted); text-align: center;
+  }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <img class="app-icon" src="images/icon.png" alt="WIPI Emulator 앱 아이콘">
+  <h1>WIPI Emulator</h1>
+  <p class="tagline">추억의 한국 피처폰 게임을 다시, 지금 손안의 폰에서.</p>
+  <p class="tagline-en">Play the Korean feature-phone games you grew up with — WIPI · SKVM · J2ME, on iPhone &amp; Android.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="mailto:parkjeongseop+wipi@parkjeongseop.com">✉️ 문의하기 · Contact</a>
+    <a class="btn btn-ghost" href="#support">지원 · Support</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="shots">
+    <figure>
+      <img src="images/library.png" alt="게임 라이브러리 화면 — 표지 그리드">
+      <figcaption>게임 라이브러리 · Library</figcaption>
+    </figure>
+    <figure>
+      <img src="images/gameplay.png" alt="게임 플레이 화면 — 키패드 포함">
+      <figcaption>게임 플레이 · Gameplay</figcaption>
+    </figure>
+    <figure>
+      <img src="images/pause.png" alt="일시정지 메뉴 화면">
+      <figcaption>일시정지 · Pause</figcaption>
+    </figure>
+    <figure>
+      <img src="images/settings.png" alt="설정 화면 — 사운드/진동">
+      <figcaption>설정 · Settings</figcaption>
+    </figure>
+  </div>
+</div>
+
+<section class="wrap">
+  <h2>기능 · Features</h2>
+  <div class="features">
+    <div class="feature"><span class="emoji">📟</span>
+      <b>3가지 플랫폼 지원</b>
+      <p>WIPI(KTF·LGT), SKVM(SKT), J2ME 형식의 한국 피처폰 게임을 실행합니다. Runs WIPI, SKVM and J2ME games.</p>
+    </div>
+    <div class="feature"><span class="emoji">📂</span>
+      <b>간단한 게임 추가</b>
+      <p>+ 버튼으로 보유한 게임 파일(.zip/.jar)을 가져오면 표지와 이름이 자동 표시됩니다. Import your own game files.</p>
+    </div>
+    <div class="feature"><span class="emoji">💾</span>
+      <b>게임별 세이브</b>
+      <p>세이브는 게임별로 안전하게 보관됩니다. Per-game save data, kept on your device.</p>
+    </div>
+    <div class="feature"><span class="emoji">🎵</span>
+      <b>사운드 &amp; 진동</b>
+      <p>배경음악(MIDI)과 효과음, 진동까지 원작 그대로. BGM, sound effects and haptics, faithful to the originals.</p>
+    </div>
+    <div class="feature"><span class="emoji">🎮</span>
+      <b>키패드 · 컨트롤러 · 키보드</b>
+      <p>화면 키패드는 물론 게임 컨트롤러와 하드웨어 키보드도 지원합니다. On-screen keypad, gamepads and keyboards.</p>
+    </div>
+    <div class="feature"><span class="emoji">🔒</span>
+      <b>완전 오프라인 · 무수집</b>
+      <p>계정도, 광고도, 데이터 수집도 없습니다. No accounts, no ads, no data collection — fully offline.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap faq">
+  <h2>자주 묻는 질문 · FAQ</h2>
+
+  <h3>게임은 어떻게 추가하나요? / How do I add a game?</h3>
+  <p>라이브러리 화면의 <strong>+</strong> 버튼을 눌러 보유하신 게임 파일(<code>.zip</code>, <code>.jar</code>)을 선택하세요. 표지와 이름이 자동으로 표시됩니다.</p>
+  <p class="en">Tap the <strong>+</strong> button in the library and pick a game package you own. The cover and title appear automatically.</p>
+
+  <h3>게임이 포함되어 있나요? / Does the app include games?</h3>
+  <p>아니요. 앱에는 게임이 포함되어 있지 않으며, 보유하신 게임 파일을 직접 가져와야 합니다.</p>
+  <p class="en">No — the app ships without game content. You import files you own.</p>
+
+  <h3>어떤 게임이 지원되나요? / Which games are supported?</h3>
+  <p>WIPI(KTF/LGT), SKVM(SKT), J2ME 형식을 지원하며, 호환성은 업데이트마다 개선됩니다. 안 되는 게임이 있으면 게임 이름과 오류 화면을 보내주세요 — 실제 사용자 제보로 여러 게임이 고쳐졌습니다.</p>
+  <p class="en">Compatibility improves with every update. If a game doesn't work, email us the game name and an error screenshot — user reports have already fixed several titles.</p>
+
+  <h3>세이브는 어디에 저장되나요? / Where are my saves?</h3>
+  <p>게임별로 앱 내부 저장공간에 보관됩니다. 라이브러리에서 게임을 삭제하면 해당 세이브도 함께 삭제됩니다.</p>
+  <p class="en">Per game, inside the app's own storage. Deleting a game also deletes its saves.</p>
+</section>
+
+<section class="wrap" id="support">
+  <h2>지원 · Support</h2>
+  <div class="contact-card">
+    <p><b>질문, 버그 제보, 게임 호환성 문제 — 이메일로 직접 연락해 주세요. 보통 1–2일 안에 답장드립니다.</b><br>
+    <span class="en">Questions, bug reports, or compatibility issues? Email us directly — we usually reply within 1–2 days.</span></p>
+    <p class="contact-email">✉️ <a href="mailto:parkjeongseop+wipi@parkjeongseop.com">parkjeongseop+wipi@parkjeongseop.com</a></p>
+    <p><a href="https://github.com/ParkJeongseop/WIPI-Emulator/issues">GitHub 이슈 트래커</a>로도 제보하실 수 있습니다. · You can also open an issue on GitHub.</p>
+  </div>
+
+  <h3>문제 신고 시 함께 보내주세요 / When reporting a problem</h3>
+  <ul>
+    <li>게임 이름 · Game name</li>
+    <li>재현 방법과 증상 · What you did and what happened</li>
+    <li>오류 화면 스크린샷 · A screenshot of the error, if shown</li>
+    <li>기기 모델과 앱 버전(설정 화면 하단) · Device model and app version</li>
+  </ul>
+</section>
+
+<footer>
+  <div class="wrap">
+    WIPI Emulator (WIPI 에뮬) · Developed by Jeongseop Park<br>
+    <a href="https://github.com/ParkJeongseop/WIPI-Emulator/blob/main/docs/PRIVACY.md">개인정보 처리방침 · Privacy Policy</a> ·
+    <a href="https://github.com/ParkJeongseop/WIPI-Emulator">GitHub</a> ·
+    <a href="mailto:parkjeongseop+wipi@parkjeongseop.com">parkjeongseop+wipi@parkjeongseop.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
