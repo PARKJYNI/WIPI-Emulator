@@ -38,8 +38,8 @@ targets:
       path: WipiEmulator/Info.plist
       properties:
         CFBundleDisplayName: WIPI Emulator
-        CFBundleShortVersionString: "0.1.0"   # Android versionName과 통일
-        CFBundleVersion: "1"
+        CFBundleShortVersionString: "0.2.0"   # Android versionName과 통일
+        CFBundleVersion: "4"
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         # 파일 앱/iTunes에서 게임 파일을 넣을 수 있게 (게임은 사용자 임포트만 — 앱스토어 4.7 대응)

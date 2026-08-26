@@ -21,8 +21,8 @@ android {
         applicationId = "com.parkjeongseop.wipi"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2  // 2: 16KB 페이지 정렬 재빌드 (Play 재업로드용 — 코드는 매 업로드 증가 필요)
-        versionName = "0.1.0"
+        versionCode = 3  // 매 업로드 증가 필요
+        versionName = "0.2.0"
         // AAB는 ABI별로 자동 분할되므로 실기기(arm64-v8a) 슬라이스만 배포됨.
         // x86_64는 에뮬레이터용이라 Play 배포 AAB엔 불필요하지만, 둘 다 넣어도 무방(APK로 뽑을 때 편함).
         ndk {
