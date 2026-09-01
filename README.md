@@ -4,9 +4,8 @@
 
 **Play classic 2000s Korean feature-phone games (WIPI / SKVM / J2ME) on your modern device.**
 
+[<img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" height="45">](https://apps.apple.com/kr/app/wipi-emulator/id6793132618)
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="64">](https://play.google.com/store/apps/details?id=com.parkjeongseop.wipi)
-
-*The iOS version is under App Store review.*
 
 [English](#english) · [한국어](#한국어)
 
@@ -34,8 +33,8 @@ A native iOS/Android emulator app for 2000s Korean feature-phone games (WIPI / S
 
 ### Download
 
+- **iOS**: [App Store](https://apps.apple.com/kr/app/wipi-emulator/id6793132618)
 - **Android**: [Google Play](https://play.google.com/store/apps/details?id=com.parkjeongseop.wipi)
-- **iOS**: under App Store review
 
 ### Screenshots
 
@@ -101,8 +100,8 @@ See the [Privacy Policy](docs/PRIVACY.md).
 
 ### 다운로드
 
+- **iOS**: [App Store](https://apps.apple.com/kr/app/wipi-emulator/id6793132618)
 - **Android**: [Google Play](https://play.google.com/store/apps/details?id=com.parkjeongseop.wipi)
-- **iOS**: App Store 심사 중
 
 ### 스크린샷
 
