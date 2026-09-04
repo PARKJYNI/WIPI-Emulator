@@ -40,11 +40,9 @@ workflows:
         script: |
           cd android
 
-          chmod +x gradlew
-
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-          ./gradlew assembleDebug
+          gradle assembleDebug
 
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
