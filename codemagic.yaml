@@ -4,15 +4,27 @@ workflows:
     instance_type: mac_mini_m2
     max_build_duration: 60
 
+    environment:
+      java: 17
+
     scripts:
-      - name: Install Rust Android tools
+      - name: Install Rust
         script: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source "$HOME/.cargo/env"
+
+          rustc --version
+          cargo --version
+
           rustup target add aarch64-linux-android
           rustup target add x86_64-linux-android
+
           cargo install cargo-ndk --locked
 
       - name: Build Rust JNI libraries
         script: |
+          source "$HOME/.cargo/env"
+
           mkdir -p android/app/src/main/jniLibs
 
           cd rust
@@ -23,14 +35,15 @@ workflows:
             -o ../android/app/src/main/jniLibs \
             build --release -p wipi_android
 
-      - name: Set Android SDK
-        script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
-
-      - name: Build APK
+      - name: Build Android APK
         script: |
           cd android
-          gradle assembleDebug
+
+          chmod +x gradlew
+
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+          ./gradlew assembleDebug
 
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
