@@ -9,25 +9,26 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.OpenableColumns
 import org.json.JSONObject
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.charset.Charset
 import java.util.UUID
+import java.util.zip.ZipInputStream
 
 data class GameEntry(
     val id: String,
     val name: String,
     val cover: Bitmap?,
     val gameFile: File,
-    val filename: String, // 포맷 감지용 원본 파일명(.zip/.jar 확장자 유지)
-    val dataDir: File, // 게임별 세이브 경로 (games/<id>/data) — 삭제 시 함께 제거
+    val filename: String,
+    val dataDir: File,
 )
 
 class GameLibrary(context: Context) {
     private val root = File(context.filesDir, "games").apply { mkdirs() }
     private val contentResolver = context.contentResolver
+    private val eucKr = Charset.forName("EUC-KR")
 
-
-    /** 저장된 게임들을 스캔 (이름순) */
     fun list(): List<GameEntry> =
         (root.listFiles() ?: emptyArray())
             .filter { it.isDirectory }
@@ -42,7 +43,6 @@ class GameLibrary(context: Context) {
             val filename = meta.getString("filename")
             val gameFile = File(dir, filename)
             if (!gameFile.exists()) return null
-
             val cover = File(dir, "cover.png").takeIf { it.exists() }?.let { BitmapFactory.decodeFile(it.path) }
             GameEntry(
                 id = dir.name,
@@ -57,7 +57,6 @@ class GameLibrary(context: Context) {
         }
     }
 
-    /** SAF Uri에서 게임을 임포트 (복사 + 표지/이름 추출·캐시). 실패 시 null. */
     fun importGame(uri: Uri): GameEntry? {
         val filename = queryDisplayName(uri) ?: uri.lastPathSegment ?: "game.zip"
         val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: return null
@@ -65,19 +64,61 @@ class GameLibrary(context: Context) {
         val id = UUID.randomUUID().toString()
         val dir = File(root, id).apply { mkdirs() }
         File(dir, filename).writeBytes(bytes)
-
         WipiNative.nativeGameIcon(bytes)?.let { File(dir, "cover.png").writeBytes(it) }
 
-        // 게임명: __adf__(EUC-KR) → 없으면 파일명(확장자 제거)
         val name = WipiNative.nativeGameName(bytes)
-            ?.toString(Charset.forName("EUC-KR"))
+            ?.toString(eucKr)
             ?: filename.substringBeforeLast('.')
+
+        // KTF/WIPI 추가 다운로드 데이터 sideload.
+        // wie의 Filesystem은 <dataDir>/<AID>/<게임이 요청한 경로> 를 실제 파일로 사용한다.
+        // 패키지 ZIP 루트의 *.dat / list 파일을 해당 위치에 선주입한다.
+        sideloadKtfDownloadData(bytes, File(dir, "data"))
 
         File(dir, "meta.json").writeText(
             JSONObject().put("name", name).put("filename", filename).toString()
         )
 
         return load(dir)
+    }
+
+    private fun sideloadKtfDownloadData(packageBytes: ByteArray, dataDir: File) {
+        val entries = linkedMapOf<String, ByteArray>()
+        var aid: String? = null
+
+        ZipInputStream(ByteArrayInputStream(packageBytes)).use { zip ->
+            while (true) {
+                val entry = zip.nextEntry ?: break
+                if (!entry.isDirectory) {
+                    val entryName = entry.name.replace('\\', '/')
+                    val baseName = entryName.substringAfterLast('/')
+                    val data = zip.readBytes()
+
+                    if (entryName == "__adf__" || baseName == "__adf__") {
+                        val adf = data.toString(eucKr)
+                        aid = adf.lineSequence()
+                            .firstOrNull { it.startsWith("AID:") }
+                            ?.substringAfter("AID:")
+                            ?.trim()
+                            ?.takeIf { it.isNotEmpty() }
+                    }
+
+                    // 추가 다운로드 원본은 패키지 최상위의 .dat / list 형태로 보존되는 경우가 있다.
+                    if (!entryName.contains('/') && (baseName.endsWith(".dat", ignoreCase = true) || baseName == "list")) {
+                        entries[baseName] = data
+                    }
+                }
+                zip.closeEntry()
+            }
+        }
+
+        val appId = aid ?: return
+        if (entries.isEmpty()) return
+
+        val appDataDir = File(dataDir, appId).apply { mkdirs() }
+        for ((name, data) in entries) {
+            File(appDataDir, name).writeBytes(data)
+        }
     }
 
     fun delete(entry: GameEntry) {
